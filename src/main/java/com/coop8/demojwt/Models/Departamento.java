@@ -1,0 +1,45 @@
+package com.coop8.demojwt.Models;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.io.Serializable;
+import java.util.Date;
+
+
+@Getter
+@Setter
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "departamentos", uniqueConstraints = {
+    @UniqueConstraint(name = "uk_departamentos_descripcion", columnNames = "descripcion")
+})
+public class Departamento implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cod_departamento")
+    private Integer codDepartamento;
+
+    @Column(name = "fecha_sistema", nullable = false, columnDefinition = "date default CURRENT_DATE")
+    private Date fechaSistema = new Date();
+
+    @Column(name = "visible", nullable = false, columnDefinition = "boolean default true")
+    private Boolean visible = true;
+
+    @Column(name = "descripcion", length = 100, unique = true)
+    private String descripcion;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cod_pais", referencedColumnName = "cod_pais", foreignKey = @ForeignKey(name = "fk_departamento_pais"))
+    private Pais pais;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "usuario", referencedColumnName = "name", foreignKey = @ForeignKey(name = "fk_usuario"))
+//    private OxUser usuario;
+
+
+}
